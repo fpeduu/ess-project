@@ -2,50 +2,50 @@ from src.schemas.response import HTTPResponses, HttpResponseModel
 from pytest_bdd import parsers, given, when, then, scenario
 from src.service.impl.room_service import RoomService
 
-# """ Scenario: obter uma sala"""
-# @scenario(scenario_name='Obter uma sala', feature_name='../features/rooms.feature')
+""" Scenario: obter uma sala"""
+@scenario(scenario_name='Obter uma sala', feature_name='../features/rooms.feature')
 
-# def test_get_room():
-#       """ Get one specific room """
+def test_get_room():
+      """ Get one specific room """
 
-# @given(parsers.cfparse('o RoomService retorna uma sala'))
-# def mock_room_service_response():
-#       """
-#             Mock the RoomService.get_rooms() method to return room data
-#       """
-#       RoomService.get_room = lambda id : HttpResponseModel(
-#             message=HTTPResponses.ROOM_FOUND().message,
-#             status_code=HTTPResponses.ROOM_FOUND().status_code,
-#             data=[{"id": "3cfe9043", "name": "Sala A22", "status": "false", "occupancy": "40"}]
-#       )
+@given(parsers.cfparse('o RoomService retorna uma sala'))
+def mock_room_service_response():
+      """
+            Mock the RoomService.get_rooms() method to return room data
+      """
+      RoomService.get_room = lambda id : HttpResponseModel(
+            message=HTTPResponses.ROOM_FOUND().message,
+            status_code=HTTPResponses.ROOM_FOUND().status_code,
+            data=[{"id": "3cfe9043", "name": "Sala A22", "status": "false", "occupancy": "40"}]
+      )
 
-# @when(parsers.cfparse('uma requisição GET for enviada para "{req_url}"'),target_fixture='context')
-# def send_get_room_request(client, context, req_url: str):
-#       """
-#             Send a GET request to the given URL
-#       """
-#       response = client.get(req_url)
-#       context['response'] = response
-#       return context
+@when(parsers.cfparse('uma requisição GET for enviada para "{req_url}"'),target_fixture='context')
+def send_get_room_request(client, context, req_url: str):
+      """
+            Send a GET request to the given URL
+      """
+      response = client.get(req_url)
+      context['response'] = response
+      return context
 
-# @then(parsers.cfparse('o status da resposta deve ser "{status_code}"'), target_fixture='context')
-# def check_get_room_response_status_code(context, status_code: str):
-#       """
-#             Check if the response status code is as expected
-#       """
+@then(parsers.cfparse('o status da resposta deve ser "{status_code}"'), target_fixture='context')
+def check_get_room_response_status_code(context, status_code: str):
+      """
+            Check if the response status code is as expected
+      """
 
-#       assert context['response'].status_code == int(status_code)
-#       return context
+      assert context['response'].status_code == int(status_code)
+      return context
 
-# @then(parsers.cfparse('o JSON da resposta deve conter a sala com id "{id}", name "{name}", status "{status}", occupancy "{occupancy}"'), target_fixture='context')
-# def check_get_room_response_json_contains_room_data(context, id: str, name: str, status: bool, occupancy: str):
-#       """
-#             Check if the response JSON contains the room data
-#       """      
+@then(parsers.cfparse('o JSON da resposta deve conter a sala com id "{id}", name "{name}", status "{status}", occupancy "{occupancy}"'), target_fixture='context')
+def check_get_room_response_json_contains_room_data(context, id: str, name: str, status: bool, occupancy: str):
+      """
+            Check if the response JSON contains the room data
+      """      
 
-#       expected_data = {"id": id, "name": name, "status": status, "occupancy": occupancy}
-#       assert expected_data in context['response'].json()['data']
-#       return context
+      expected_data = {"id": id, "name": name, "status": status, "occupancy": occupancy}
+      assert expected_data in context['response'].json()['data']
+      return context
 
 
 
