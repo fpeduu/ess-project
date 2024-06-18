@@ -115,3 +115,81 @@ def check_response_json_contains_reservation_data(context, reservation_id: str, 
     expected_data = {"id": reservation_id, "room_id": room_id, "user_id": user_id, "start_date": start_date, "end_date": end_date}
     assert expected_data in context['response'].data
     return context
+
+"""Scenario: Approve a reservation"""
+
+@scenario(scenario_name='Aprovar uma reserva', feature_name='../features/reservations-service.feature')
+def test_approve_reservation():
+    """ Approves a reservation """
+
+@given(parsers.cfparse('o método approve_reservation do reservation_service atualiza o status da reserva de id {reservation_id}'))
+def mock_reservation_service_response(reservation_id: str):
+    """
+    Mock the ReservationService.updateReservation() method to return a list of reservations
+    """
+    
+    ReservationService.approve_reservation = lambda reservation_id: HttpResponseModel(
+        message=HTTPResponses.RESERVATION_APPROVED().message,
+        status_code=HTTPResponses.RESERVATION_APPROVED().status_code,
+        data={"status": "approved"}
+    )
+
+@when(parsers.cfparse('o método approve_reservation do reservation_service for chamado com os parâmetros id {reservation_id}'), target_fixture='context')
+def call_approve_reservation_method(context, reservation_id: str):
+    """
+    Call the updateReservation method from ReservationService
+    """
+    
+    response = ReservationService.approve_reservation(reservation_id)
+    context['response'] = response
+    return context
+
+@then(parsers.cfparse('a reserva de id {reservation_id} deve ser seu status atualizado para "approved"'), target_fixture='context')
+def check_response_json_approves_reservation(context, reservation_id: str):
+    """
+    Check if the response JSON contains the reservation data
+    """
+    
+    expected_data = 'approved'
+    assert expected_data in context['response'].data['status']
+    return context
+
+
+
+"""Scenario: Deny a reservation"""
+
+@scenario(scenario_name='Negar uma reserva', feature_name='../features/reservations-service.feature')
+def test_deny_reservation():
+    """ Denies a reservation """
+
+@given(parsers.cfparse('o método deny_reservation do reservation_service atualiza o status da reserva de id {reservation_id}'))
+def mock_reservation_service_response(reservation_id: str):
+    """
+    Mock the ReservationService.updateReservation() method to return a list of reservations
+    """
+    
+    ReservationService.deny_reservation = lambda reservation_id: HttpResponseModel(
+        message=HTTPResponses.RESERVATION_DENIED().message,
+        status_code=HTTPResponses.RESERVATION_DENIED().status_code,
+        data={"status": "denied"}
+    )
+
+@when(parsers.cfparse('o método deny_reservation do reservation_service for chamado com os parâmetros id {reservation_id}'), target_fixture='context')
+def call_deny_reservation_method(context, reservation_id: str):
+    """
+    Call the updateReservation method from ReservationService
+    """
+    
+    response = ReservationService.deny_reservation(reservation_id)
+    context['response'] = response
+    return context
+
+@then(parsers.cfparse('a reserva de id {reservation_id} deve ser seu status atualizado para "denied"'), target_fixture='context')
+def check_response_json_denies_reservation(context, reservation_id: str):
+    """
+    Check if the response JSON contains the reservation data
+    """
+    
+    expected_data = 'denied'
+    assert expected_data in context['response'].data['status']
+    return context

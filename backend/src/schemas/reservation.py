@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class ReservationCreate(BaseModel):
     room_id: str
     user_id: str
+    status: str
     start_time: datetime
     end_time: datetime 
     activity: str
@@ -20,6 +21,7 @@ class ReservationGet(BaseModel):
     id: str
     room_id: str
     user_id: str
+    status: str
     start_time: datetime
     end_time: datetime
     activity: str

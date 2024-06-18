@@ -111,3 +111,58 @@ def update_reservation(reservation_id: str, reservation: dict) -> HttpResponseMo
     """
     reservation_update_response = ReservationService.update_reservation(reservation_id, reservation)
     return reservation_update_response
+
+@router.put(
+    "/{reservation_id}/reservation_approve",
+    response_model=HttpResponseModel,
+    status_code=status.HTTP_201_CREATED,
+    description="Approve a reservation",
+    tags=["reservations"],
+    responses={
+        status.HTTP_201_CREATED: {
+            "model": HttpResponseModel,
+            "description": "Reservation approved",
+        }
+    }
+)
+
+def approve_reservation(reservation_id: str) -> HttpResponseModel:
+    """
+    Approve a reservation.
+
+    Args:
+        reservation_id (str): The reservation id that needs to be approved
+
+    Returns:
+        HttpResponseModel: The approved reservation
+    """
+    
+    reservation_approve_response = ReservationService.approve_reservation(reservation_id)
+    return reservation_approve_response
+
+@router.put(
+    "{reservation_id}/reservation_deny",
+    response_model=HttpResponseModel,
+    status_code=status.HTTP_201_CREATED,
+    description="Deny a reservation",
+    tags=["reservations"],
+    responses={
+        status.HTTP_201_CREATED: {
+            "model": HttpResponseModel,
+            "description": "Reservation denied",
+        }
+    }
+)
+def deny_reservation(reservation_id: str) -> HttpResponseModel:
+    """
+    Approve a reservation.
+
+    Args:
+        reservation_id (str): The reservation id that needs to be approved
+
+    Returns:
+        HttpResponseModel: The approved reservation
+    """
+    
+    reservation_deny_response = ReservationService.deny_reservation(reservation_id)
+    return reservation_deny_response
