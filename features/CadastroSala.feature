@@ -24,7 +24,6 @@ Then o sistema detecta que a sala "Sala A22" já está cadastrada,
 And o sistema exibe uma mensagem de erro "Erro: Sala já cadastrada"
 And o sistema não aceita o cadastro duplicado da "Sala A22"
 <<<<<<< HEAD
-Then yas.
 =======
 
 Feature: Sala, Funcionalidade: Cadastrar nova sala
@@ -39,4 +38,4 @@ And ela clica no botão "Salvar nova sala"
 Then o sistema detecta que o campo "capacidade da sala" está em branco,
 And o sistema exibe uma mensagem de erro "Erro: Capacidade da sala não foi informada."
 And o sistema não aceita o cadastro da "Sala A22".
->>>>>>> dev
+

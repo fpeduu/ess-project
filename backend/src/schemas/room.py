@@ -4,13 +4,13 @@ from pydantic import BaseModel
 
 class RoomModel(BaseModel):
     name: str
-    status: str
+    status: bool = False
     occupancy: int
 
 class RoomGet(BaseModel):
     id: str
     name: str
-    status: str
+    status: bool
     occupancy: int
     created_at: Optional[datetime]
 

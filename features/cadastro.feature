@@ -21,4 +21,3 @@ AND confirma a deleção na janela de confirmação
 THEN ele deve ver a mensagem "Conta deletada com sucesso"
 AND o usuário deve ser redirecionado para a página inicial
 AND os dados do usuário devem ser removidos do sistema
-
