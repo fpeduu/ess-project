@@ -24,3 +24,4 @@ class UserServiceMeta(ABC):
     def delete_user(self, user_id: str) -> bool:
         """Delete user method definition"""
         pass
+

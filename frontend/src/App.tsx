@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     Component: AddUserPage,
   },
   {
-    path: '/users/:userId/update',
+    path: '/update',
     Component: UpdateUserPage,
   },
   {

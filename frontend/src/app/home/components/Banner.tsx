@@ -13,7 +13,7 @@ const Banner: React.FC = () => {
   };
 
   const handleLogin = () => {
-    const userId = '581a68ac'; 
+    const userId = '2d79a30a'; 
     sessionStorage.setItem('userId', userId);
     navigate('/menu');
   };

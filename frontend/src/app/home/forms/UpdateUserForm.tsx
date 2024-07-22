@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
 
-interface UpdateUserFormProps {
-  userId: string; // userId é obrigatório
-}
-
-const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
+const UpdateUserForm: React.FC = () => {
   const [userData, setUserData] = useState({
     email: '',
     password: '',
@@ -20,34 +16,57 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch user data
-    axios.get(`http://localhost:8000/users/${userId}`)
-      .then(response => {
-        setUserData(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError('Error fetching user data');
-        setLoading(false);
-      });
-  }, [userId]);
+    const storedUserId = sessionStorage.getItem('userId');
+    if (storedUserId) {
+      axios.get(`http://localhost:8000/users/${storedUserId}`)
+        .then(response => {
+          console.log('Fetched user data:', response.data);
+          console.log(response.data.data.name)
+          const data2 = response.data.data
+          setUserData({
+            email: data2.email || '',
+            password: data2.password || '',
+            cpf: data2.cpf || '',
+            name: data2.name || '',
+            role: data2.role || ''
+          });
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+          setError('Error fetching user data');
+          setLoading(false);
+        });
+    } else {
+      setError('User ID not found in session storage');
+      setLoading(false);
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+    setUserData(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Send the updated data to the API
-    axios.put(`http://localhost:8000/users/${userId}`, userData)
-      .then(response => {
-        setSuccessMessage('User updated successfully');
-        setError(null);
-      })
-      .catch(error => {
-        setError('Error updating user');
-        setSuccessMessage(null);
-      });
+    const storedUserId = sessionStorage.getItem('userId');
+    if (storedUserId) {
+      axios.put(`http://localhost:8000/users/${storedUserId}`, userData)
+        .then(response => {
+          setSuccessMessage('User updated successfully');
+          setError(null);
+        })
+        .catch(error => {
+          console.error('Error updating user:', error);
+          setError('Error updating user');
+          setSuccessMessage(null);
+        });
+    } else {
+      setError('User ID not found in session storage');
+    }
   };
 
   if (loading) {

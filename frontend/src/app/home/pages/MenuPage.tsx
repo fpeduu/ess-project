@@ -54,7 +54,7 @@ const MenuPage: React.FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => handleMenuClick('/meus-dados')}>Meus Dados</MenuItem>
+              <MenuItem onClick={() => handleMenuClick('/update')}>Meus Dados</MenuItem>
               <MenuItem onClick={() => handleMenuClick('')}>Minhas Reservas</MenuItem>
               <MenuItem onClick={() => handleMenuClick('/delete')}>Deletar Conta</MenuItem>
               <MenuItem onClick={() => handleMenuClick('/')}>Sair</MenuItem>
