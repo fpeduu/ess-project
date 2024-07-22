@@ -4,14 +4,14 @@ from pydantic import BaseModel
 
 class RoomModel(BaseModel):
     name: str
-    status: bool = False
-    occupancy: int
+    status: str
+    capacity: int
 
 class RoomGet(BaseModel):
     id: str
     name: str
-    status: bool
-    occupancy: int
+    status: str
+    capacity: int
     created_at: Optional[datetime]
 
 class RoomList(BaseModel):

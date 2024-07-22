@@ -1,5 +1,7 @@
+from datetime import datetime
 from src.schemas.response import HTTPResponses, HttpResponseModel
 from src.service.meta.room_service_meta import RoomServiceMeta
+from src.schemas.room import RoomModel, RoomGet
 from src.db.__init__ import database as db
 
 class RoomService(RoomServiceMeta):
@@ -35,9 +37,15 @@ class RoomService(RoomServiceMeta):
             )
       
       @staticmethod
-      def create_room(room: dict) -> HttpResponseModel:
+      def create_room(name: str, status: str, capacity: int) -> HttpResponseModel:
             """Create item method implementation"""
-            db.insert_item('rooms', room)
+            room_data = RoomModel(
+                  name=name,
+                  status=status,
+                  capacity=capacity,
+                  created_at= datetime.now().isoformat()
+            )
+            db.insert_item('rooms', room_data.dict())
             return HttpResponseModel(
                   message=HTTPResponses.ROOM_CREATED().message,
                   status_code=HTTPResponses.ROOM_CREATED().status_code,

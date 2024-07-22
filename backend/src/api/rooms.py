@@ -1,6 +1,7 @@
 from fastapi import APIRouter, status
 from src.schemas.response import HttpResponseModel
 from src.service.impl.room_service import RoomService
+from src.schemas.room import RoomModel
 
 
 router = APIRouter()
@@ -81,7 +82,7 @@ def get_rooms(id: str) -> HttpResponseModel:
       },
 )
 
-def create_room(room: dict) -> HttpResponseModel:
+def create_room(room: RoomModel) -> HttpResponseModel:
       """
             Create a room.
 
@@ -91,7 +92,7 @@ def create_room(room: dict) -> HttpResponseModel:
             Returns:
             - the created room
       """
-      room_create_response = RoomService.create_room(room)
+      room_create_response = RoomService.create_room(room.name, room.status, room.capacity)
       return room_create_response
 
 @router.put(
