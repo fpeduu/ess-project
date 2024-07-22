@@ -80,9 +80,21 @@ const UpdateUserForm: React.FC = () => {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom>
-        Update User
+       Meu dados
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
+      <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="name"
+          label="Name"
+          id="name"
+          value={userData.name}
+          onChange={handleChange}
+        />
+
         <TextField
           margin="normal"
           required
@@ -106,36 +118,7 @@ const UpdateUserForm: React.FC = () => {
           value={userData.password}
           onChange={handleChange}
         />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="cpf"
-          label="CPF"
-          id="cpf"
-          value={userData.cpf}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="name"
-          label="Name"
-          id="name"
-          value={userData.name}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="role"
-          label="Role"
-          id="role"
-          value={userData.role}
-          onChange={handleChange}
-        />
+
         <Button
           type="submit"
           fullWidth
