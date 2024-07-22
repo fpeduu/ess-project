@@ -7,20 +7,23 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
 } from "@mui/material";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
 import { ReservationModel } from "../models/Reservations";
 
 interface ReservationTableProps {
   reservations: ReservationModel[];
+  approveReservation: (id: string) => void;
+  rejectReservation: (id: string) => void;
 }
 
 const ReservationTable: React.FC<ReservationTableProps> = ({
   reservations,
+  approveReservation,
+  rejectReservation,
 }) => {
-  useEffect(() => {
-    console.log(reservations);
-  }, []);
-
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -31,6 +34,7 @@ const ReservationTable: React.FC<ReservationTableProps> = ({
             <TableCell>Status</TableCell>
             <TableCell>Data inicial</TableCell>
             <TableCell>Data final</TableCell>
+            <TableCell>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -47,6 +51,16 @@ const ReservationTable: React.FC<ReservationTableProps> = ({
                 <TableCell>
                   {new Date(reservation.end_date).toLocaleDateString()} -{" "}
                   {new Date(reservation.end_date).toLocaleTimeString()}
+                </TableCell>
+                <TableCell style={{ display: "flex" }}>
+                  <IconButton
+                    onClick={() => approveReservation(reservation.id)}
+                  >
+                    <DoneIcon />
+                  </IconButton>
+                  <IconButton onClick={() => rejectReservation(reservation.id)}>
+                    <CloseIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

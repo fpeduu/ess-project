@@ -87,6 +87,21 @@ const ReservationsManagementPage: React.FC = () => {
     }
   };
 
+  const changeReservationStatus = async (id: string, approved: boolean) => {
+    try {
+      await axios.put(`http://localhost:8000/reservations/${id}/`, {
+        status: approved ? "Aprovada" : "Rejeitada",
+      });
+      setMessage("Status da reserva alterado com sucesso.");
+      setOpenSnackbar(true);
+      fetchReservations();
+    } catch (err) {
+      setError("Erro ao alterar status da reserva.");
+      setOpenSnackbar(true);
+      console.error(err);
+    }
+  };
+
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -124,7 +139,15 @@ const ReservationsManagementPage: React.FC = () => {
             </Grid>
           </Grid>
           <Box mt={4}>
-            <ReservationsTable reservations={filteredReservations} />
+            <ReservationsTable
+              reservations={filteredReservations}
+              approveReservation={(id: string) =>
+                changeReservationStatus(id, true)
+              }
+              rejectReservation={(id: string) =>
+                changeReservationStatus(id, false)
+              }
+            />
           </Box>
         </>
         <Snackbar
