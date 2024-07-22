@@ -1,3 +1,4 @@
+from fastapi import HTTPException  # Adicione esta importação
 from typing import Optional
 from pydantic import BaseModel
 
@@ -13,6 +14,13 @@ class HTTPResponses:
     """
 
     @staticmethod
+    def DATA_FOUND(item_name: str) -> HttpResponseModel:
+        return HttpResponseModel(
+            message=f"{item_name} found",
+            status_code=200,
+        )
+
+    @staticmethod
     def ITEM_NOT_FOUND() -> HttpResponseModel:
         return HttpResponseModel(
             message="Item not found",
@@ -21,10 +29,7 @@ class HTTPResponses:
 
     @staticmethod
     def ITEM_FOUND() -> HttpResponseModel:
-        return HttpResponseModel(
-            message="Item found",
-            status_code=200,
-        )
+        return HTTPResponses.DATA_FOUND("Item")
 
     @staticmethod
     def ITEM_CREATED() -> HttpResponseModel:
@@ -49,10 +54,8 @@ class HTTPResponses:
     
     @staticmethod
     def REVIEW_FOUND() -> HttpResponseModel:
-        return HttpResponseModel(
-            message="Review found",
-            status_code=200,
-        )
+        return HTTPResponses.DATA_FOUND("Review")
+
     
     @staticmethod
     def REVIEW_CREATED() -> HttpResponseModel:
@@ -70,10 +73,8 @@ class HTTPResponses:
     
     @staticmethod
     def RATING_FOUND() -> HttpResponseModel:
-        return HttpResponseModel(
-            message="Rating found",
-            status_code=200,
-        )
+        return HTTPResponses.DATA_FOUND("Rating")
+
     
     @staticmethod
     def RATING_CREATED() -> HttpResponseModel:
@@ -91,10 +92,8 @@ class HTTPResponses:
     
     @staticmethod
     def RESERVATION_FOUND() -> HttpResponseModel:
-        return HttpResponseModel(
-            message="Reservation found",
-            status_code=200,
-        )
+        return HTTPResponses.DATA_FOUND("Reservation")
+
     
     @staticmethod
     def RESERVATION_CREATED() -> HttpResponseModel:
@@ -104,33 +103,36 @@ class HTTPResponses:
         )
     
     @staticmethod
-    def ROOM_FOUND() -> HttpResponseModel:
+    def RESERVATION_REMOVED() -> HttpResponseModel:
         return HttpResponseModel(
-            message="Room found",
-            status_code=200,
+            message="Reservation removed",
+            status_code=200
         )
-      
+
     @staticmethod
+    def ROOM_FOUND() -> HttpResponseModel:
+        return HTTPResponses.DATA_FOUND("Room")
+
     def RESERVATION_UPDATED() -> HttpResponseModel:
         return HttpResponseModel(
             message="Reservation updated",
             status_code=200,
         )
-    
+
     @staticmethod
     def ROOM_NOT_FOUND() -> HttpResponseModel:
         return HttpResponseModel(
             message="Room not found",
             status_code=404,
         )
-    
+
     @staticmethod
     def ROOM_CREATED() -> HttpResponseModel:
         return HttpResponseModel(
             message="Room created",
             status_code=201,
         )
-    
+
     @staticmethod
     def ROOM_CHANGE_STATUS() -> HttpResponseModel:
         return HttpResponseModel(
@@ -144,7 +146,7 @@ class HTTPResponses:
             message="user created",
             status_code=201,
         )
-    
+
 
     @staticmethod
     def USER_NOT_FOUND() -> HttpResponseModel:
@@ -155,28 +157,79 @@ class HTTPResponses:
 
     @staticmethod
     def USER_FOUND() -> HttpResponseModel:
-        return HttpResponseModel(
-            message="User found",
-            status_code=200,
-        )
-    
+        return HTTPResponses.DATA_FOUND("User")
+
+
     @staticmethod
     def ROOM_DELETED() -> HttpResponseModel:
         return HttpResponseModel(
             message="Room deleted",
             status_code=200,
         )
-    
+
+    @staticmethod
     def USER_UPDATED() -> HttpResponseModel:
         return HttpResponseModel(
             message="User updated",
             status_code=200,
         )
-    
 
     @staticmethod
     def USER_DELETED() -> HttpResponseModel:
         return HttpResponseModel(
             message="User deleted",
+            status_code=200,
+        )
+
+    @staticmethod
+    def EQUIPMENT_FOUND() -> HttpResponseModel:
+        return HTTPResponses.DATA_FOUND("Equipment")
+
+
+    @staticmethod
+    def EQUIPMENT_NOT_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Equipment not Found",
+            status_code=404
+        )
+
+    @staticmethod
+    def EQUIPMENT_DELETED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Equipamento excluído",
+            status_code=200,
+        )
+
+    @staticmethod
+    def RESERVATION_APPROVED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Reservation approved",
+            status_code=201,
+        )
+
+    @staticmethod
+    def RESERVATION_DENIED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Reservation denied",
+            status_code=201,
+        )
+    
+    @staticmethod
+    def RESERVATION_REMOVED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Reservation removed",
+            status_code=200
+        )
+
+    @staticmethod
+    def ROOM_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Room found",
+            status_code=200,
+        )
+
+    def RESERVATION_UPDATED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="Reservation updated",
             status_code=200,
         )

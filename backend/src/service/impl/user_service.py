@@ -8,7 +8,7 @@ class UserService(UserServiceMeta):
 
     @staticmethod
     def get_user(user_id: str) -> HttpResponseModel:
-        """Get item by id method implementation"""
+        """Get user by id method implementation"""
         user = db.get_item_by_id('users', user_id)
         if not user:
             return HttpResponseModel(
@@ -44,20 +44,16 @@ class UserService(UserServiceMeta):
                 message=HTTPResponses.USER_NOT_FOUND().message,
                 status_code=HTTPResponses.USER_NOT_FOUND().status_code,
             )
-        user_data["updated_at"] = str(datetime.now())
-        updated_user = db.update_item('users', user_id, user_data)
-        if updated_user:
+        
+        else:
+            user_data["updated_at"] = str(datetime.now())
+            updated_user = db.update_item('users', user_id, user_data)
             return HttpResponseModel(
                 message=HTTPResponses.USER_UPDATED().message,
                 status_code=HTTPResponses.USER_UPDATED().status_code,
                 data=updated_user,
             )
-        else:
-            return HttpResponseModel(
-                message=HTTPResponses.USER_NOT_FOUND().message,
-                status_code=HTTPResponses.USER_NOT_FOUND().status_code
-            )
-
+        
     @staticmethod
     def delete_user(user_id: str) -> HttpResponseModel:
         """Delete user by id method implementation"""
@@ -78,4 +74,4 @@ class UserService(UserServiceMeta):
             return HttpResponseModel(
                 message=HTTPResponses.USER_NOT_FOUND().message,
                 status_code=HTTPResponses.USER_NOT_FOUND().status_code
-            )
+            )   

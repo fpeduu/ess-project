@@ -1,4 +1,4 @@
-Feature: reserva e manutenção de salas (reservar, atualizar e cancelar)
+Feature: Reserva e manutenção de salas (reservar, atualizar e cancelar)
 modificação para teste
 As a usuário
 I want to ser capaz de reservar salas e gerenciá-las

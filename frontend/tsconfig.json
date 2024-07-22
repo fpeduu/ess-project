@@ -19,6 +19,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
+    "allowImportingTsExtensions": true,
 
     "paths": {
       "@badeball/cypress-cucumber-preprocessor/*": [
