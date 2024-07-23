@@ -12,6 +12,7 @@ import AddUserPage from "./app/home/pages/User/AddUserPage";
 import UpdateUserPage from "./app/home/pages/User/UpdateUserPage";
 import DeleteUserPage from "./app/home/pages/User/DeleteUserPage";
 import EquipmentManagerPage from "./app/home/pages/Equipment/EquipmentManagerPage";
+import ReservationManagerPage from "./app/home/pages/Reservations/ReservationManagerPage";
 import ReservationsManagementPage from "./app/home/pages/ReservationsAdmin/ReservationsPage";
 import Layout from "./app/home/pages/Layout";
 import LoginPage from "./app/home/pages/LoginPage/LoginPage";
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       { path: "/users/update", element: <UpdateUserPage /> },
       { path: "/users/delete", element: <DeleteUserPage /> },
       { path: "/admin/equipment", element: <EquipmentManagerPage /> },
+      { path: "/reservations", element: <ReservationManagerPage /> },
       { path: "/admin/reservations", element: <ReservationsManagementPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/rooms", element: <ListRoomPage /> },
