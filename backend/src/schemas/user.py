@@ -19,3 +19,7 @@ class UserGet(BaseModel):
 
 class UserList(BaseModel):
     rooms: list[UserGet]
+
+class UserLogin(BaseModel):
+    email: str
+    password: str

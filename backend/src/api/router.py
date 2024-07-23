@@ -6,6 +6,7 @@ from src.api import room_equipment
 from src.api import users
 from src.api import rooms
 from src.api import equipment
+from src.api import login
 from src.schemas.response import HttpResponseModel
 from fastapi import status
 
@@ -17,6 +18,7 @@ api_router.include_router(reservations.router, prefix="/reservations", tags=["re
 api_router.include_router(room_equipment.router, prefix="/room_equipments", tags=["room_equipments"])
 api_router.include_router(rooms.router, prefix="/rooms", tags=["rooms"])
 api_router.include_router(equipment.router, prefix="/equipment", tags=["equipment"])
+api_router.include_router(login.router, prefix="/login", tags=["login"])
 
 
 @api_router.get(
