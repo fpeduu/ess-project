@@ -135,8 +135,6 @@ def get_user(user_id: str) -> HttpResponseModel:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user_details_response
 
-
-
 @router.get(
     "/",
     response_model=HttpResponseModel,
