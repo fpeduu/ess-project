@@ -12,6 +12,10 @@ const Banner: React.FC = () => {
     navigate("/users");
   };
 
+  const handleLogin = () => {
+    navigate("/login");
+  }
+
   return (
     <Box
       sx={{
@@ -32,6 +36,7 @@ const Banner: React.FC = () => {
           color="primary"
           size="large"
           style={{ margin: "0 10px" }}
+          onClick={handleLogin}
         >
           Login
         </Button>

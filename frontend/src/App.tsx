@@ -14,6 +14,8 @@ import DeleteUserPage from "./app/home/pages/User/DeleteUserPage";
 import EquipmentManagerPage from "./app/home/pages/Equipment/EquipmentManagerPage";
 import ReservationsManagementPage from "./app/home/pages/ReservationsAdmin/ReservationsPage";
 import Layout from "./app/home/pages/Layout";
+import LoginPage from "./app/home/pages/LoginPage/LoginPage";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +29,7 @@ const router = createBrowserRouter([
       { path: "/users/delete/:userId", element: <DeleteUserPage /> },
       { path: "/equipment", element: <EquipmentManagerPage /> },
       { path: "/admin/reservations", element: <ReservationsManagementPage /> },
+      { path: "/login", element: <LoginPage />},
       {
         path: "/admin/new-room",
         element: <FormNewRoomPage />,
