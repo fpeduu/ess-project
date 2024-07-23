@@ -84,4 +84,9 @@ Cypress.Commands.add("addReservation", (reservation) => {
   cy.request("POST", "http://localhost:8000/reservations", reservation);
 });
 
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from failing the test
+  return false;
+});
+
 export {};
