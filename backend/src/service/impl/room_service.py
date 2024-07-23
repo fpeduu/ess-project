@@ -15,6 +15,21 @@ class RoomService(RoomServiceMeta):
                         message=HTTPResponses.ROOM_NOT_FOUND().message,
                         status_code=HTTPResponses.ROOM_NOT_FOUND().status_code,
                   )
+            
+            now = datetime.now()
+            reservations = db.get_items_by_field('reservations', 'room_id', rooms[0].get('id'))
+            if len(reservations) > 0:
+                  for reservation in reservations:
+                        start_time = reservation.get("start_time")
+                        end_time = reservation.get("end_time")
+                        date_format = "%d/%m/%Y %H:%M:%S"
+                        dt_start_time = datetime.strptime(start_time, date_format)
+                        dt_end_time = datetime.strptime(end_time, date_format)
+                        if dt_start_time <= now <= dt_end_time:
+                              rooms[0]["occupancy_status"] = True
+
+                        
+
             return HttpResponseModel(
               message=HTTPResponses.ROOM_FOUND().message,
               status_code=HTTPResponses.ROOM_FOUND().status_code,
@@ -97,8 +112,9 @@ class RoomService(RoomServiceMeta):
                         for reservation in reservations:
                               start_time = reservation.get("start_time")
                               end_time = reservation.get("end_time")
-                              dt_start_time = datetime.fromisoformat(start_time)
-                              dt_end_time = datetime.fromisoformat(end_time)
+                              date_format = "%d/%m/%Y %H:%M:%S"
+                              dt_start_time = datetime.strptime(start_time, date_format)
+                              dt_end_time = datetime.strptime(end_time, date_format)
 
                               if dt_start_time <= now <= dt_end_time:
                                     owner = db.get_item_by_id('users', reservation.get("user_id"))
