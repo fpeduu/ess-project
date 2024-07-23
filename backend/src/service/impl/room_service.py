@@ -95,11 +95,10 @@ class RoomService(RoomServiceMeta):
                   reservations = db.get_items_by_field('reservations', 'room_id', room.get('id'))
                   if len(reservations) > 0:
                         for reservation in reservations:
-                              date_format = "%d/%m/%Y %H:%M:%S"
                               start_time = reservation.get("start_time")
                               end_time = reservation.get("end_time")
-                              dt_start_time = datetime.strptime(start_time, date_format)
-                              dt_end_time = datetime.strptime(end_time, date_format)
+                              dt_start_time = datetime.fromisoformat(start_time)
+                              dt_end_time = datetime.fromisoformat(end_time)
 
                               if dt_start_time <= now <= dt_end_time:
                                     owner = db.get_item_by_id('users', reservation.get("user_id"))
@@ -127,12 +126,6 @@ class RoomService(RoomServiceMeta):
 
                               alreadyAdded = True
                   
-            if not statuses:
-                  return HttpResponseModel(
-                        message=HTTPResponses.RESERVATION_NOT_FOUND().message,
-                        status_code=HTTPResponses.RESERVATION_NOT_FOUND().status_code,
-                  )
-            
             return HttpResponseModel(
                   message=HTTPResponses.RESERVATION_FOUND().message,
                   status_code=HTTPResponses.RESERVATION_FOUND().status_code,
