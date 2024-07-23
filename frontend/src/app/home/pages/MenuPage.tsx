@@ -59,6 +59,7 @@ const MenuPage: React.FC = () => {
               <a
                 color="secondary"
                 onClick={() => navigate("/admin/reservations")}
+                id="ver-historico"
                 style={{ marginRight: 16, cursor: "pointer" }}
               >
                 Histórico de Reservas

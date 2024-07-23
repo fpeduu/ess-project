@@ -40,7 +40,10 @@ const ReservationTable: React.FC<ReservationTableProps> = ({
         <TableBody>
           {reservations.length > 0 &&
             reservations.map((reservation) => (
-              <TableRow key={reservation.id}>
+              <TableRow
+                key={reservation.id}
+                data-cy={`reservation-${reservation.id}`}
+              >
                 <TableCell>{reservation.room.name}</TableCell>
                 <TableCell>{reservation.user.name}</TableCell>
                 <TableCell>{reservation.status}</TableCell>
