@@ -11,6 +11,17 @@ const FormNewRoom: React.FC = () => {
   const [error, setError] = useState<string>('');
   const navigate = useNavigate(); // Hook para navegação
 
+  const validateFields = () => {
+    if (!name || !status || !capacity) {
+      const errorMsg = 'Todos os campos são obrigatórios.';
+      setError(errorMsg);
+      setMessage('');
+      window.alert(errorMsg); // Exibe um alerta do navegador
+      return false;
+    }
+    return true;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (value === '') {
@@ -27,11 +38,7 @@ const FormNewRoom: React.FC = () => {
     e.preventDefault();
 
     // Verifica se todos os campos obrigatórios estão preenchidos
-    if (!name || !status || !capacity) {
-      setError('Todos os campos são obrigatórios.');
-      setMessage('');
-      return;
-    }
+    if (!validateFields()) return;
 
     const room = { name, status, capacity };
 
@@ -46,7 +53,7 @@ const FormNewRoom: React.FC = () => {
       // Redireciona após um atraso de 2 segundos
       setTimeout(() => {
         navigate('/rooms');
-      }, 1000); // 2000 milissegundos = 2 segundos
+      }, 1000); // 1000 milissegundos = 1 segundo
     } catch (error) {
       setError('Erro ao criar sala.');
       setMessage('');
@@ -83,6 +90,7 @@ const FormNewRoom: React.FC = () => {
           autoComplete="room-name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          data-cy="name"  // Adicione este atributo
         />
         <FormControl fullWidth margin="normal" required>
           <InputLabel id="status-label">Selecione o status</InputLabel>
@@ -92,6 +100,7 @@ const FormNewRoom: React.FC = () => {
             value={status}
             onChange={(e) => setStatus(e.target.value)}
             label="Selecione o status"
+            data-cy="status"  // Adicione este atributo
           >
             <MenuItem value={"available"}>Disponível</MenuItem>
             <MenuItem value={"unavailable"}>Indisponível</MenuItem>
@@ -107,17 +116,19 @@ const FormNewRoom: React.FC = () => {
           type="number"
           value={capacity}
           onChange={handleChange}
+          data-cy="capacity"  // Adicione este atributo
         />
         <Button
           type="submit"
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
+          data-cy="create-room"  // Adicione este atributo
         >
           Criar Sala
         </Button>
-        {message && <Alert severity="success">{message}</Alert>}
-        {error && <Alert severity="error">{error}</Alert>}
+        {message && <Alert severity="success" data-cy="success">{message}</Alert>}
+        {error && <Alert severity="error" data-cy="error">{error}</Alert>}
       </Box>
     </Container>
   );

@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Alert,
+} from "@mui/material";
 
 interface UpdateUserFormProps {
   userId: string; // userId é obrigatório
@@ -8,11 +15,11 @@ interface UpdateUserFormProps {
 
 const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
   const [userData, setUserData] = useState({
-    email: '',
-    password: '',
-    cpf: '',
-    name: '',
-    role: ''
+    email: "",
+    password: "",
+    cpf: "",
+    name: "",
+    role: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -21,13 +28,15 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
 
   useEffect(() => {
     // Fetch user data
-    axios.get(`http://localhost:8000/users/${userId}`)
-      .then(response => {
+    axios
+      .get(`http://localhost:8000/users/${userId}`)
+      .then((response) => {
         setUserData(response.data);
+        console.log(response.data);
         setLoading(false);
       })
-      .catch(error => {
-        setError('Error fetching user data');
+      .catch((error) => {
+        setError("Error fetching user data");
         setLoading(false);
       });
   }, [userId]);
@@ -39,13 +48,14 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Send the updated data to the API
-    axios.put(`http://localhost:8000/users/${userId}`, userData)
-      .then(response => {
-        setSuccessMessage('User updated successfully');
+    axios
+      .put(`http://localhost:8000/users/${userId}`, userData)
+      .then((response) => {
+        setSuccessMessage("User updated successfully");
         setError(null);
       })
-      .catch(error => {
-        setError('Error updating user');
+      .catch((error) => {
+        setError("Error updating user");
         setSuccessMessage(null);
       });
   };
@@ -59,11 +69,22 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
   }
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" style={{ marginTop: 32 }}>
       <Typography variant="h4" gutterBottom>
-        Update User
+        Meu dados
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="name"
+          label="Name"
+          id="name"
+          value={userData.name}
+          onChange={handleChange}
+        />
+
         <TextField
           margin="normal"
           required
@@ -87,36 +108,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
           value={userData.password}
           onChange={handleChange}
         />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="cpf"
-          label="CPF"
-          id="cpf"
-          value={userData.cpf}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="name"
-          label="Name"
-          id="name"
-          value={userData.name}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="role"
-          label="Role"
-          id="role"
-          value={userData.role}
-          onChange={handleChange}
-        />
+
         <Button
           type="submit"
           fullWidth

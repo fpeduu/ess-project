@@ -1,13 +1,19 @@
-import React from 'react';
-import DeleteUserButton from '../../components/DeleteUserButton';
-import { Container, Typography, Box } from '@mui/material';
+import React, { useEffect } from "react";
+import DeleteUserButton from "../../components/DeleteUserButton";
+import { Container, Typography, Box } from "@mui/material";
+import { SessionService } from "../../../../shared/services/SessionService";
 
 const DeleteUserPage: React.FC = () => {
-  const userId = sessionStorage.getItem('userId');
+  const [userId, setUserId] = React.useState<string | null>(null);
+  const sessionManager = new SessionService();
 
-  console.log('User ID from sessionStorage:', userId);
+  useEffect(() => {
+    const user = sessionManager.getUser();
+    if (user) {
+      setUserId(user.id);
+    }
+  }, []);
 
-  // Verifica se o userId está definido
   if (!userId) {
     return (
       <Container maxWidth="sm">
@@ -16,7 +22,8 @@ const DeleteUserPage: React.FC = () => {
             Excluir Usuário
           </Typography>
           <Typography variant="body1" paragraph>
-            ID do usuário não encontrado. Por favor, verifique se você está logado.
+            ID do usuário não encontrado. Por favor, verifique se você está
+            logado.
           </Typography>
         </Box>
       </Container>
@@ -26,10 +33,8 @@ const DeleteUserPage: React.FC = () => {
   return (
     <Container maxWidth="sm">
       <Box my={4}>
-        
         <DeleteUserButton userId={userId} />
       </Box>
-      
     </Container>
   );
 };
