@@ -15,6 +15,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBack from "@mui/icons-material/ArrowBack"; // Importando o ícone de seta para trás
 import { ReviewsModel } from "../../models/Reviews";
+import { SessionService } from "../../../../shared/services/SessionService";
 
 interface RoomDetails {
   id: string;
@@ -23,9 +24,11 @@ interface RoomDetails {
   status: boolean;
   capacity: number;
   imageUrl: string;
+  occupancy_status?: boolean;
 }
 
 const RoomDetailsPage: React.FC = () => {
+  const sessionManager = new SessionService();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [room, setRoom] = useState<RoomDetails | null>(null);
@@ -87,7 +90,7 @@ const RoomDetailsPage: React.FC = () => {
   const handleReviewFeedback = async (review_id: string, liked: boolean) => {
     try {
       await axios.post(`http://localhost:8000/reviews/ratings`, {
-        user_id: "be72ccb8",
+        user_id: sessionManager.getUser().id,
         review_id,
         liked,
       });
@@ -106,6 +109,34 @@ const RoomDetailsPage: React.FC = () => {
       console.error("Erro ao deletar a sala:", error);
     }
   };
+
+  const formatDate = (date) => {
+    const datePart = date.toLocaleDateString('pt-BR');
+    const timePart = date.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+    return `${datePart} ${timePart}`;
+}
+
+  const reserveRoom = async () => {
+    try {
+      const today = new Date();
+      await axios.post(`http://localhost:8000/reservations/`, {
+        room_id: room?.id,
+        user_id: sessionManager.getUser().id,
+        start_time: formatDate(new Date(today.getFullYear(), today.getMonth(), today.getDate())),
+        end_time: formatDate(new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999)),
+        activity: "Aula",
+        teacher: "Breno"
+      });
+      navigate("/rooms")
+    } catch (error) {
+      console.error("Errro ao reservar sala", error);
+    }
+  }
 
   if (loading) {
     return (
@@ -191,6 +222,17 @@ const RoomDetailsPage: React.FC = () => {
           Deletar Sala
         </Button>
       </Box>
+
+      {!room.occupancy_status && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={reserveRoom}
+            style={{ marginTop: "10px" }}
+          >
+            Reservar Sala
+          </Button>
+        )}
 
       <Box mt={4}>Avaliações</Box>
 
