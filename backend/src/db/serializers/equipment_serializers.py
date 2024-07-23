@@ -1,7 +1,4 @@
 def equipment_entity(equipment) -> dict:
-    """
-    Returns a dict of the equipment entity
-    """
     return {
         "id": equipment["id"],
         "name": equipment["name"],
@@ -11,9 +8,6 @@ def equipment_entity(equipment) -> dict:
     }
 
 def equipment_response_entity(equipment) -> dict:
-    """
-    Returns a dict of the equipment response entity
-    """
     return {
         "id": equipment["id"],
         "name": equipment["name"],

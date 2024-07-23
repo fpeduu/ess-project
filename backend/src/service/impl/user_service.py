@@ -8,7 +8,7 @@ class UserService(UserServiceMeta):
 
     @staticmethod
     def get_user(user_id: str) -> HttpResponseModel:
-        """Get item by id method implementation"""
+        """Get user by id method implementation"""
         user = db.get_item_by_id('users', user_id)
         if not user:
             return HttpResponseModel(
@@ -40,24 +40,21 @@ class UserService(UserServiceMeta):
         """Update user by id method implementation"""
         existing_user = db.get_item_by_id('users', user_id)
         if not existing_user:
+            print("não encontrou o user")
             return HttpResponseModel(
                 message=HTTPResponses.USER_NOT_FOUND().message,
                 status_code=HTTPResponses.USER_NOT_FOUND().status_code,
             )
+        
+        
         user_data["updated_at"] = str(datetime.now())
         updated_user = db.update_item('users', user_id, user_data)
-        if updated_user:
-            return HttpResponseModel(
-                message=HTTPResponses.USER_UPDATED().message,
-                status_code=HTTPResponses.USER_UPDATED().status_code,
-                data=updated_user,
+        return HttpResponseModel(
+            message=HTTPResponses.USER_UPDATED().message,
+            status_code=HTTPResponses.USER_UPDATED().status_code,
+            data=updated_user,
             )
-        else:
-            return HttpResponseModel(
-                message=HTTPResponses.USER_NOT_FOUND().message,
-                status_code=HTTPResponses.USER_NOT_FOUND().status_code
-            )
-
+        
     @staticmethod
     def delete_user(user_id: str) -> HttpResponseModel:
         """Delete user by id method implementation"""
@@ -78,4 +75,21 @@ class UserService(UserServiceMeta):
             return HttpResponseModel(
                 message=HTTPResponses.USER_NOT_FOUND().message,
                 status_code=HTTPResponses.USER_NOT_FOUND().status_code
+            )
+        
+
+    @staticmethod
+    def get_all_users() -> HttpResponseModel:
+        """Get all items method implementation"""
+        users = db.get_all_items('users')
+        if not users:
+            return HttpResponseModel(
+                message=HTTPResponses.USER_NOT_FOUND().message,
+                status_code=HTTPResponses.USER_NOT_FOUND().status_code,
+            )
+
+        return HttpResponseModel(
+                message=HTTPResponses.USER_FOUND().message,
+                status_code=HTTPResponses.USER_FOUND().status_code,
+                data=users,
             )

@@ -1,18 +1,20 @@
+from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel
 
 class EquipmentModel(BaseModel):
+    id: str
     name: str
-    description: str
+    description: Optional[str] = None
     amount: int
+    created_at: Optional[datetime] = None
 
 class EquipmentGet(BaseModel):
     id: str
     name: str
-    description: str
+    description: Optional[str] = None
     amount: int
-    created_at: Optional[datetime]  
+    created_at: Optional[datetime] = None
 
 class EquipmentList(BaseModel):
     equipments: list[EquipmentGet]

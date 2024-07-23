@@ -35,7 +35,7 @@ const CreateTest = () => {
 
   return (
     <section className={styles.container}>
-      <h1 className={styles.title}>Crie um test</h1>
+      <h1 className={styles.title}>Crie um testando</h1>
       <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formInputContainer}>
           <input
