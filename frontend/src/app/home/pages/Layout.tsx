@@ -12,7 +12,7 @@ const Layout: React.FC = () => {
 
   return (
     <>
-      {currentRoute != "/" && <MenuPage />}
+      {!["/", "/login"].includes(currentRoute) && <MenuPage />}
       <main>
         <Outlet />
       </main>
