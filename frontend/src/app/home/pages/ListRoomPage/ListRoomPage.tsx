@@ -21,7 +21,7 @@ interface Room {
   capacity: number;
   imageUrl: string;
   occupancyStatus?: boolean;
-  owner?: {email: string, name: string};
+  owner?: { email: string; name: string };
 }
 
 const ListRoomPage: React.FC = () => {
@@ -31,7 +31,7 @@ const ListRoomPage: React.FC = () => {
   const navigate = useNavigate();
   const sessionManager = new SessionService();
 
-  useEffect(() => {    
+  useEffect(() => {
     const fetchRooms = async (new_rooms) => {
       try {
         const response = await axios.get("http://localhost:8000/rooms");
@@ -49,11 +49,13 @@ const ListRoomPage: React.FC = () => {
     const fetchStatus = async (new_rooms) => {
       try {
         const user_id = sessionManager.getUser()?.id ?? "";
-        const response = await axios.get("http://localhost:8000/rooms/occupancy/" + user_id);
+        const response = await axios.get(
+          "http://localhost:8000/rooms/occupancy/" + user_id
+        );
         if (response.data.data) {
           const statusList = response.data.data;
-          statusList.forEach(status => {
-            new_rooms.forEach(room => {
+          statusList.forEach((status) => {
+            new_rooms.forEach((room) => {
               if (room.id == status.room_id) {
                 room.occupancyStatus = status.occupancy_status;
                 room.owner = status.owner;
@@ -90,7 +92,7 @@ const ListRoomPage: React.FC = () => {
 
   const isAdmin = () => {
     return sessionManager.getUser()?.role.toLowerCase() == "admin";
-  }
+  };
 
   if (loading) {
     return (
