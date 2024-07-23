@@ -13,7 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ReservationListProps {
   reservations: ReservationModel[];
-  onDelete: (id: string) => void;
+  onDelete: (reservation: ReservationModel) => void;
   onEdit: (reservation: ReservationModel) => void;
 }
 
@@ -22,11 +22,17 @@ const ReservationList: React.FC<ReservationListProps> = ({
   onDelete,
   onEdit,
 }) => {
+        const reservationsArray = Object.values(reservations);
+        if (!Array.isArray(reservationsArray)) {
+          return <p>Não há reservas disponíveis.</p>;
+        }
+
+
   return (
     <Box>
       <Paper elevation={3}>
         <List>
-          {reservations.map((reservation) => (
+          {reservationsArray.map((reservation) => (
             <ListItem key={reservation.id} sx={{ borderBottom: "1px solid #ccc" }}>
               <ListItemText
                 primary={`Reserva ID: ${reservation.id}`}
@@ -35,7 +41,7 @@ const ReservationList: React.FC<ReservationListProps> = ({
               <IconButton edge="end" aria-label="edit" onClick={() => onEdit(reservation)}>
                 <EditIcon />
               </IconButton>
-              <IconButton edge="end" aria-label="delete" onClick={() => onDelete(reservation.id)}>
+              <IconButton edge="end" aria-label="delete" onClick={() => onDelete(reservation)}>
                 <DeleteIcon />
               </IconButton>
             </ListItem>

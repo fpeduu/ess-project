@@ -7,12 +7,10 @@ import {
   Paper,
   Button,
   Divider,
-  TextField,
   Snackbar,
 } from "@mui/material";
 import ReservationList from "../../components/ReservationsList";
 import ReservationForm from "../../components/ReservationsForm";
-import ReservationTable from "../../components/ReservationsTable";
 import { ReservationModel } from "../../models/Reservations";
 
 const ReservationPage: React.FC = () => {
@@ -79,9 +77,9 @@ const ReservationPage: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (reservation: ReservationModel) => {
     try {
-      await axios.delete(`http://localhost:8000/reservations/${id}`);
+      await axios.delete(`http://localhost:8000/reservations/${reservation.id}`);
       fetchReservations();
       setMessage("Reserva removida com sucesso!");
       setError("");
@@ -137,7 +135,7 @@ const ReservationPage: React.FC = () => {
           message={message || error}
           action={
             <Button color="inherit" size="small" onClick={handleCloseSnackbar}>
-              FECHAR
+              Fechar
             </Button>
           }
         />
