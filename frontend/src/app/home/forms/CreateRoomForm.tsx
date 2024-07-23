@@ -1,22 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
+import { Container, TextField, Select, MenuItem, InputLabel, FormControl, Button, Typography, Box, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const FormNewRoom: React.FC = () => {
-  const [name, setname] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [capacity, setCapacity] = useState<number | ''>('');
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const navigate = useNavigate(); // Hook para navegação
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -40,15 +33,20 @@ const FormNewRoom: React.FC = () => {
       return;
     }
 
-    const room = {name, status, capacity };
+    const room = { name, status, capacity };
 
     try {
       const response = await axios.post('http://localhost:8000/rooms/', room);
       setMessage('Sala criada com sucesso!');
       setError('');
-      setname('');
+      setName('');
       setStatus('');
       setCapacity('');
+
+      // Redireciona após um atraso de 2 segundos
+      setTimeout(() => {
+        navigate('/rooms');
+      }, 1000); // 2000 milissegundos = 2 segundos
     } catch (error) {
       setError('Erro ao criar sala.');
       setMessage('');
@@ -84,7 +82,7 @@ const FormNewRoom: React.FC = () => {
           name="name"
           autoComplete="room-name"
           value={name}
-          onChange={(e) => setname(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
         <FormControl fullWidth margin="normal" required>
           <InputLabel id="status-label">Selecione o status</InputLabel>

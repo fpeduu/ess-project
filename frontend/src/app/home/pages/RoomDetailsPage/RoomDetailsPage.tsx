@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, Box, CircularProgress, Alert, Button } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
+import ArrowBack from '@mui/icons-material/ArrowBack'; // Importando o ícone de seta para trás
 
 interface RoomDetails {
   id: string;
@@ -20,107 +21,112 @@ const RoomDetailsPage: React.FC = () => {
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-      const fetchRoomDetails = async () => {
-        try {
-          const response = await axios.get(`http://localhost:8000/rooms/${id}`);
-          console.log('Room Details Response:', response.data);
-          const roomData = response.data.data[0];
-          setRoom(roomData);
-          setLoading(false);
-        } catch (error) {
-          setError('Erro ao carregar os detalhes da sala.');
-          setLoading(false);
-          console.error(error);
-        }
-      };
-  
-      fetchRoomDetails();
-    }, [id]);
-  
-    const toggleRoomStatus = async () => {
-      if (!room) return;
-  
-      const newStatus = !room.status;
-  
+    const fetchRoomDetails = async () => {
       try {
-        await axios.put(`http://localhost:8000/rooms/${id}?status=${newStatus}`);
-        setRoom({ ...room, status: newStatus });
+        const response = await axios.get(`http://localhost:8000/rooms/${id}`);
+        console.log('Room Details Response:', response.data);
+        const roomData = response.data.data[0];
+        setRoom(roomData);
+        setLoading(false);
       } catch (error) {
-        console.error('Erro ao mudar o status da sala:', error);
+        setError('Erro ao carregar os detalhes da sala.');
+        setLoading(false);
+        console.error(error);
       }
     };
-  
-    const deleteRoom = async () => {
-      try {
-        await axios.delete(`http://localhost:8000/rooms/${id}`);
-        navigate('/rooms');
-      } catch (error) {
-        console.error('Erro ao deletar a sala:', error);
-      }
-    };
-  
-    if (loading) {
-      return (
-        <Container maxWidth="sm">
-          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-            <CircularProgress />
-          </Box>
-        </Container>
-      );
+
+    fetchRoomDetails();
+  }, [id]);
+
+  const toggleRoomStatus = async () => {
+    if (!room) return;
+
+    const newStatus = !room.status;
+
+    try {
+      await axios.put(`http://localhost:8000/rooms/${id}?status=${newStatus}`);
+      setRoom({ ...room, status: newStatus });
+    } catch (error) {
+      console.error('Erro ao mudar o status da sala:', error);
     }
-  
-    if (error) {
-      return (
-        <Container maxWidth="sm">
-          <Box my={4}>
-            <Typography variant="h4" gutterBottom>
-              Erro
-            </Typography>
-            <Alert severity="error">{error}</Alert>
-          </Box>
-        </Container>
-      );
+  };
+
+  const deleteRoom = async () => {
+    try {
+      await axios.delete(`http://localhost:8000/rooms/${id}`);
+      navigate('/rooms');
+    } catch (error) {
+      console.error('Erro ao deletar a sala:', error);
     }
-  
-    if (!room) {
-      return (
-        <Container maxWidth="sm">
-          <Box my={4}>
-            <Typography variant="h4" gutterBottom>
-              Sala não encontrada
-            </Typography>
-          </Box>
-        </Container>
-      );
-    }
-  
+  };
+
+  if (loading) {
     return (
       <Container maxWidth="sm">
-        <Typography variant="h4" gutterBottom>
-          Detalhes da Sala
-        </Typography>
-        <Box>
-          <Typography variant="h5" component="div">
-            {room.roomName || room.name}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Status: {room.status ? 'Disponível' : 'Indisponível'}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Capacidade Máxima: {room.capacity}
-          </Typography>
-          <img src={room.imageUrl || 'https://via.placeholder.com/300'} alt={room.roomName} style={{ width: '100%' }} />
-          <Box mt={2}>
-            <Button variant="contained" color="primary" onClick={toggleRoomStatus}>
-              {room.status ? 'Marcar como Indisponível' : 'Marcar como Disponível'}
-            </Button>
-            <Button variant="contained" color="secondary" onClick={deleteRoom} style={{ marginLeft: '10px' }}>
-              Deletar Sala
-            </Button>
-          </Box>
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <CircularProgress />
         </Box>
       </Container>
     );
-  };
-  
-  export default RoomDetailsPage;
+  }
+
+  if (error) {
+    return (
+      <Container maxWidth="sm">
+        <Box my={4}>
+          <Typography variant="h4" gutterBottom>
+            Erro
+          </Typography>
+          <Alert severity="error">{error}</Alert>
+        </Box>
+      </Container>
+    );
+  }
+
+  if (!room) {
+    return (
+      <Container maxWidth="sm">
+        <Box my={4}>
+          <Typography variant="h4" gutterBottom>
+            Sala não encontrada
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
+
+  return (
+    <Container maxWidth="sm">
+      <Box display="flex" alignItems="center" mb={4} paddingTop={1.2}>
+        <Button onClick={() => navigate('/rooms')} style={{ minWidth: 'auto', padding: 0}}>
+          <ArrowBack style={{ fontSize: 40, marginRight: 16}} />
+        </Button>
+        <Typography variant="h4" component="div">
+          Detalhes da Sala
+        </Typography>
+      </Box>
+      <Box mb={4}> {/* Adicionando um espaçamento entre as informações e a imagem */}
+        <Typography variant="h5" component="div">
+          {room.roomName || room.name}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Status: {room.status ? 'Disponível' : 'Indisponível'}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Capacidade Máxima: {room.capacity}
+        </Typography>
+      </Box>
+      <img src={room.imageUrl || 'https://via.placeholder.com/300'} alt={room.roomName} style={{ width: '100%' }} />
+      <Box mt={2}>
+        <Button variant="contained" color="primary" onClick={toggleRoomStatus}>
+          {room.status ? 'Marcar como Indisponível' : 'Marcar como Disponível'}
+        </Button>
+        <Button variant="contained" color="secondary" onClick={deleteRoom} style={{ marginLeft: '10px' }}>
+          Deletar Sala
+        </Button>
+      </Box>
+    </Container>
+  );
+};
+
+export default RoomDetailsPage;
