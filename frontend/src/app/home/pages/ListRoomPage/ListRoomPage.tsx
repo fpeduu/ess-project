@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Grid, Typography, CircularProgress, Alert, Box } from '@mui/material';
+import { Container, Grid, Typography, CircularProgress, Alert, Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import RoomCard from '../../components/RoomCard/RoomCard';
 
 interface Room {
@@ -16,6 +17,7 @@ const ListRoomPage: React.FC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const navigate = useNavigate(); // Hook para navegação
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -33,6 +35,10 @@ const ListRoomPage: React.FC = () => {
 
     fetchRooms();
   }, []);
+
+  const handleCreateNewRoom = () => {
+    navigate('/new-room'); // Navega para a página de criação de nova sala
+  };
 
   if (loading) {
     return (
@@ -73,6 +79,11 @@ const ListRoomPage: React.FC = () => {
             </Grid>
           ))}
         </Grid>
+        <Box mt={4} display="flex" justifyContent="center">
+          <Button variant="contained" color="primary" onClick={handleCreateNewRoom}>
+            Criar Nova Sala
+          </Button>
+        </Box>
       </Box>
     </Container>
   );
