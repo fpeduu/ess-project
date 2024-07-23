@@ -150,3 +150,25 @@ def delete_room(id: str) -> HttpResponseModel:
       """
       room_delete_response = RoomService.delete_room(id)
       return room_delete_response
+
+
+@router.get(
+      "/occupancy/{user_id}",
+      response_model=HttpResponseModel,
+      status_code=status.HTTP_200_OK,
+      description="Show information of a room occupantion by user ID",
+      tags=['rooms'],
+      responses= {
+            status.HTTP_200_OK: {
+                  "model": HttpResponseModel,
+                  "description": "Successfully got statuses",
+            },
+            status.HTTP_404_NOT_FOUND: {
+                  "description": "Item not found",
+            }
+      },
+)
+
+def get_rooms_occupancy(user_id: str) -> HttpResponseModel:
+      room_occupancy_response = RoomService.get_rooms_occupancy(user_id)
+      return room_occupancy_response

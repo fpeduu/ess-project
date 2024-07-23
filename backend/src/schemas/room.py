@@ -16,3 +16,12 @@ class RoomGet(BaseModel):
 
 class RoomList(BaseModel):
     rooms: list[RoomGet]
+
+class Owner(BaseModel):
+    email: str
+    name: str
+
+class RoomReservation(BaseModel):
+    room_id: str
+    owner: Owner
+    occupation_status: bool

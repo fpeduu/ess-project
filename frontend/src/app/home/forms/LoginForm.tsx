@@ -33,7 +33,7 @@ const LoginForm: React.FC = () => {
       sessionManager.setUser(response.data.data[0]);
 
       if (response.data.data[0].role === "admin") navigate("/admin/rooms");
-      else navigate("/");
+      else navigate("/rooms");
       window.location.reload();
     } catch (error) {
       setError(

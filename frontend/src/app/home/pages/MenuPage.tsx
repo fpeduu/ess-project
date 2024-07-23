@@ -39,6 +39,10 @@ const MenuPage: React.FC = () => {
 
   const handleMenuClick = (path: string) => {
     handleClose();
+    if (path == "/") {
+      sessionManager.clearUser();
+    }
+    
     navigate(path);
   };
 
