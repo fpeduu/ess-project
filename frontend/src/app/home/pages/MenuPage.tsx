@@ -46,7 +46,7 @@ const MenuPage: React.FC = () => {
                 position: "absolute",
                 alignSelf: "center",
                 justifySelf: "center",
-                left: "40%",
+                left: "30%",
               }}
             >
               <a
@@ -59,9 +59,16 @@ const MenuPage: React.FC = () => {
               <a
                 color="secondary"
                 onClick={() => navigate("/admin/reservations")}
-                style={{ cursor: "pointer" }}
+                style={{ marginRight: 16, cursor: "pointer" }}
               >
                 Histórico de Reservas
+              </a>
+              <a
+                color="secondary"
+                onClick={() => navigate("/equipment")}
+                style={{ marginRight: 16, cursor: "pointer" }}
+              >
+                Equipamentos
               </a>
             </Box>
           ) : (
@@ -71,7 +78,7 @@ const MenuPage: React.FC = () => {
                 position: "absolute",
                 alignSelf: "center",
                 justifySelf: "center",
-                left: "40%",
+                left: "30%",
               }}
             >
               <a
@@ -84,9 +91,16 @@ const MenuPage: React.FC = () => {
               <a
                 color="secondary"
                 onClick={() => navigate("/admin/reservations")}
-                style={{ cursor: "pointer" }}
+                style={{ marginRight: 16, cursor: "pointer" }}
               >
                 Histórico de Reservas
+              </a>
+              <a
+                color="secondary"
+                onClick={() => navigate("/equipment")}
+                style={{ marginRight: 16, cursor: "pointer" }}
+              >
+                Equipamentos
               </a>
             </Box>
           )}
