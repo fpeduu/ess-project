@@ -18,6 +18,9 @@ class ReviewService(ReviewServiceMeta):
         room = db.get_item_by_id('rooms', review['room_id'])
         review['room'] = room
 
+        ratings = db.get_items_by_field('review_ratings', 'review_id', review['id'])
+        review['ratings'] = ratings
+
     print(reviews)
 
     if not reviews:

@@ -7,16 +7,15 @@ import {
   Box,
   Menu,
   MenuItem,
+  Button,
   Container,
-  Card,
-  CardContent,
-  Grid,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 
 const MenuPage: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [isUserAdmin, setIsUserAdmin] = React.useState(true);
   const navigate = useNavigate();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -33,12 +32,65 @@ const MenuPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} position="relative">
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Dashboard
           </Typography>
+
+          {isUserAdmin ? (
+            <Box
+              style={{
+                display: "flex",
+                position: "absolute",
+                alignSelf: "center",
+                justifySelf: "center",
+                left: "40%",
+              }}
+            >
+              <a
+                color="secondary"
+                onClick={() => navigate("/admin/rooms")}
+                style={{ marginRight: 16, cursor: "pointer" }}
+              >
+                Salas
+              </a>
+              <a
+                color="secondary"
+                onClick={() => navigate("/admin/reservations")}
+                style={{ cursor: "pointer" }}
+              >
+                Histórico de Reservas
+              </a>
+            </Box>
+          ) : (
+            <Box
+              style={{
+                display: "flex",
+                position: "absolute",
+                alignSelf: "center",
+                justifySelf: "center",
+                left: "40%",
+              }}
+            >
+              <a
+                color="secondary"
+                onClick={() => navigate("/admin/rooms")}
+                style={{ marginRight: 16, cursor: "pointer" }}
+              >
+                Salas
+              </a>
+              <a
+                color="secondary"
+                onClick={() => navigate("/admin/reservations")}
+                style={{ cursor: "pointer" }}
+              >
+                Histórico de Reservas
+              </a>
+            </Box>
+          )}
+
           <div>
             <IconButton
               size="large"
@@ -51,6 +103,7 @@ const MenuPage: React.FC = () => {
             >
               <AccountCircle />
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -69,7 +122,7 @@ const MenuPage: React.FC = () => {
               <MenuItem onClick={() => handleMenuClick("/meus-dados")}>
                 Meus Dados
               </MenuItem>
-              <MenuItem onClick={() => handleMenuClick("")}>
+              <MenuItem onClick={() => handleMenuClick("/minhas-reservas")}>
                 Minhas Reservas
               </MenuItem>
               <MenuItem onClick={() => handleMenuClick("/delete")}>

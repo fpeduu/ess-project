@@ -27,19 +27,19 @@ const router = createBrowserRouter([
       { path: "/users/delete/:userId", element: <DeleteUserPage /> },
       { path: "/equipment", element: <EquipmentManagerPage /> },
       { path: "/admin/reservations", element: <ReservationsManagementPage /> },
+      {
+        path: "/admin/new-room",
+        element: <FormNewRoomPage />,
+      },
+      {
+        path: "/admin/rooms",
+        element: <ListRoomPage />,
+      },
+      {
+        path: "/admin/rooms/:id",
+        element: <RoomDetailsPage />,
+      },
     ],
-  },
-  {
-    path: "/admin/new-room",
-    Component: FormNewRoomPage,
-  },
-  {
-    path: "/admin/rooms",
-    Component: ListRoomPage,
-  },
-  {
-    path: "/admin/rooms/:id",
-    Component: RoomDetailsPage,
   },
 ]);
 

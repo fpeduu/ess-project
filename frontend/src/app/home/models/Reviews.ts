@@ -14,4 +14,11 @@ export interface ReviewsModel {
     status: string;
     occupancy: string;
   };
+  ratings: {
+    user_id: string;
+    review_id: string;
+    liked: boolean;
+  }[];
+  likesCount?: number;
+  dislikesCount?: number;
 }

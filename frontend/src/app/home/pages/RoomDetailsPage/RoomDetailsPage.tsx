@@ -7,9 +7,14 @@ import {
   CircularProgress,
   Alert,
   Button,
+  Card,
+  CardHeader,
+  Avatar,
+  CardContent,
 } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBack from "@mui/icons-material/ArrowBack"; // Importando o ícone de seta para trás
+import { ReviewsModel } from "../../models/Reviews";
 
 interface RoomDetails {
   id: string;
@@ -27,7 +32,26 @@ const RoomDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<ReviewsModel[]>([]);
+
+  const fetchRoomReviews = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/reviews/${id}`);
+
+      const reviewsWithLikes = response.data.data.map((review) => {
+        const likesCount = review.ratings.filter(
+          (rating) => rating.liked
+        ).length;
+        const dislikesCount = review.ratings.filter(
+          (rating) => !rating.liked
+        ).length;
+        return { ...review, likesCount, dislikesCount };
+      });
+      setReviews(reviewsWithLikes);
+    } catch (error) {
+      console.error("Erro ao carregar as avaliações da sala:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchRoomDetails = async () => {
@@ -43,19 +67,6 @@ const RoomDetailsPage: React.FC = () => {
       }
     };
 
-    const fetchRoomReviews = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/reviews?room_id=${id}`
-        );
-
-        console.log(response.data.data);
-        setReviews(response.data.data);
-      } catch (error) {
-        console.error("Erro ao carregar as avaliações da sala:", error);
-      }
-    };
-
     fetchRoomDetails();
     fetchRoomReviews();
   }, [id]);
@@ -68,6 +79,20 @@ const RoomDetailsPage: React.FC = () => {
     try {
       await axios.put(`http://localhost:8000/rooms/${id}?status=${newStatus}`);
       setRoom({ ...room, status: newStatus });
+    } catch (error) {
+      console.error("Erro ao mudar o status da sala:", error);
+    }
+  };
+
+  const handleReviewFeedback = async (review_id: string, liked: boolean) => {
+    try {
+      await axios.post(`http://localhost:8000/reviews/ratings`, {
+        user_id: "be72ccb8",
+        review_id,
+        liked,
+      });
+
+      fetchRoomReviews();
     } catch (error) {
       console.error("Erro ao mudar o status da sala:", error);
     }
@@ -126,7 +151,7 @@ const RoomDetailsPage: React.FC = () => {
     <Container maxWidth="sm">
       <Box display="flex" alignItems="center" mb={4} paddingTop={1.2}>
         <Button
-          onClick={() => navigate("/rooms")}
+          onClick={() => navigate("/admin/rooms")}
           style={{ minWidth: "auto", padding: 0 }}
         >
           <ArrowBack style={{ fontSize: 40, marginRight: 16 }} />
@@ -168,6 +193,48 @@ const RoomDetailsPage: React.FC = () => {
       </Box>
 
       <Box mt={4}>Avaliações</Box>
+
+      <Box mt={2}>
+        {reviews.length === 0 ? (
+          <Typography variant="body1" color="text.secondary">
+            Nenhuma avaliação disponível.
+          </Typography>
+        ) : (
+          reviews.map((review) => (
+            <Card key={review.id} style={{ marginBottom: "16px" }}>
+              <CardHeader
+                title={review.user.name}
+                subheader={new Date(review.created_at!).toLocaleDateString()}
+              />
+              <CardContent>
+                <Typography variant="body1" color="text.secondary">
+                  Nota: {review.rating}/5
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {review.comment}
+                </Typography>
+              </CardContent>
+              <Box m={2}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginRight: "8px" }}
+                  onClick={() => handleReviewFeedback(review.id, true)}
+                >
+                  Útil ({review.likesCount || 0})
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => handleReviewFeedback(review.id, false)}
+                >
+                  Não útil ({review.dislikesCount || 0})
+                </Button>
+              </Box>
+            </Card>
+          ))
+        )}
+      </Box>
     </Container>
   );
 };
