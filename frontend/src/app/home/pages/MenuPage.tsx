@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
+import { SessionService } from "../../../shared/services/SessionService";
 
 const MenuPage: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [isUserAdmin, setIsUserAdmin] = React.useState(true);
   const navigate = useNavigate();
+  const sessionManager = new SessionService();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +30,10 @@ const MenuPage: React.FC = () => {
 
   const handleMenuClick = (path: string) => {
     handleClose();
+    if (path == "/") {
+      sessionManager.clearUser();
+    }
+    
     navigate(path);
   };
 

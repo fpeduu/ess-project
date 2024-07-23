@@ -30,6 +30,7 @@ const router = createBrowserRouter([
       { path: "/equipment", element: <EquipmentManagerPage /> },
       { path: "/admin/reservations", element: <ReservationsManagementPage /> },
       { path: "/login", element: <LoginPage />},
+      { path: "/rooms", element: <ListRoomPage />},
       {
         path: "/admin/new-room",
         element: <FormNewRoomPage />,

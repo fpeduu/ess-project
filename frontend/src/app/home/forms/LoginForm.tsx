@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
             setEmail('');
             setPassword('');
             sessionManager.setUser(response.data.data[0]);
-            navigate("/");
+            navigate("/rooms");
         } catch (error ) {
             setError('Erro ao autenticar usuário. Verifique seu email e senha para tentar novamente.');
             setMessage('');
