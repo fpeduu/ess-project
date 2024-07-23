@@ -30,17 +30,17 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/new-room",
+    path: "/admin/new-room",
     Component: FormNewRoomPage,
   },
   {
-    path: "/rooms",
+    path: "/admin/rooms",
     Component: ListRoomPage,
   },
   {
-    path: "/rooms/:id",
+    path: "/admin/rooms/:id",
     Component: RoomDetailsPage,
-  }
+  },
 ]);
 
 const App: React.FC = () => {

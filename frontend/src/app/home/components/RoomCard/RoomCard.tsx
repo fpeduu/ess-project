@@ -1,6 +1,12 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, CardActionArea } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CardActionArea,
+} from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface RoomCardProps {
   id: string;
@@ -10,14 +16,20 @@ interface RoomCardProps {
   imageUrl: string;
 }
 
-const RoomCard: React.FC<RoomCardProps> = ({ id, roomName, status, capacity, imageUrl }) => {
+const RoomCard: React.FC<RoomCardProps> = ({
+  id,
+  roomName,
+  status,
+  capacity,
+  imageUrl,
+}) => {
   return (
     <Card>
-      <CardActionArea component={Link} to={`/rooms/${id}`}>
+      <CardActionArea component={Link} to={`/admin/rooms/${id}`}>
         <CardMedia
           component="img"
           height="140"
-          image={imageUrl || 'https://via.placeholder.com/300'} // Placeholder image if imageUrl is empty
+          image={imageUrl || "https://via.placeholder.com/300"} // Placeholder image if imageUrl is empty
           alt={roomName}
         />
         <CardContent>
@@ -25,7 +37,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ id, roomName, status, capacity, ima
             {roomName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Status: {status ? 'Disponível' : 'Indisponível'}
+            Status: {status ? "Disponível" : "Indisponível"}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Capacidade: {capacity}
