@@ -77,7 +77,7 @@ const MenuPage: React.FC = () => {
               </a>
               <a
                 color="secondary"
-                onClick={() => navigate("/equipment")}
+                onClick={() => navigate("/admin/equipment")}
                 style={{ marginRight: 16, cursor: "pointer" }}
               >
                 Equipamentos

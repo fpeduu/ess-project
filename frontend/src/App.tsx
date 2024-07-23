@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       { path: "/users", element: <AddUserPage /> },
       { path: "/users/update", element: <UpdateUserPage /> },
       { path: "/users/delete", element: <DeleteUserPage /> },
-      { path: "/equipment", element: <EquipmentManagerPage /> },
+      { path: "/admin/equipment", element: <EquipmentManagerPage /> },
       { path: "/admin/reservations", element: <ReservationsManagementPage /> },
       { path: "/login", element: <LoginPage /> },
       {
