@@ -39,7 +39,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
 
   return (
     <Card data-cy={`room-card-${id}`}>
-      <CardActionArea component={Link} to={`/admin/rooms/${id}`}>
+      <CardActionArea component={Link} to={`/admin/rooms/${id}`} style={occupation}>
         <CardMedia
           component="img"
           height="140"
