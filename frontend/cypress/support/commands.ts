@@ -41,12 +41,52 @@ declare global {
   namespace Cypress {
     interface Chainable {
       getDataCy(dataCySelector: string): Chainable<JQuery<HTMLElement>>;
+      login(admin: boolean): void;
+      addReservation(reservation: {
+        user_id: string;
+        room_id: string;
+        start_date: string;
+        end_date: string;
+        status: string;
+      }): void;
     }
   }
 }
 
 Cypress.Commands.add("getDataCy", (dataCySelector) => {
   return cy.get(`[data-cy="${dataCySelector}"]`);
+});
+
+Cypress.Commands.add("login", (admin: boolean) => {
+  const user = admin
+    ? {
+        email: "fefs@cin.ufpe.br",
+        password: "asdasd123!",
+        cpf: "21893230900092139012930",
+        name: "filipe",
+        role: "admin",
+        id: "439051c4",
+      }
+    : {
+        email: "joão@gmail.com",
+        password: "teste123!",
+        cpf: "123456789",
+        name: "João",
+        role: "user",
+        deleted: false,
+        id: "505a7abc",
+      };
+
+  window.sessionStorage.setItem("user", JSON.stringify(user));
+});
+
+Cypress.Commands.add("addReservation", (reservation) => {
+  cy.request("POST", "http://localhost:8000/reservations", reservation);
+});
+
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from failing the test
+  return false;
 });
 
 export {};

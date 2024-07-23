@@ -79,7 +79,9 @@ const ReservationsManagementPage: React.FC = () => {
   const fetchReservations = async () => {
     try {
       const response = await axios.get("http://localhost:8000/reservations/");
-      setReservations(response.data.data);
+      if (response.data.data) {
+        setReservations(response.data.data);
+      }
     } catch (err) {
       setError("Erro ao carregar equipamentos.");
       setOpenSnackbar(true);

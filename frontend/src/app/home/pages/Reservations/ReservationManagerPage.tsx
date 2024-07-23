@@ -110,7 +110,7 @@ const ReservationPage: React.FC = () => {
             setSelectedReservation={setSelectedReservation}
           />
         </Box>
-        <Box sx={{ mb: 2 }}>
+        {/* <Box sx={{ mb: 2 }}>
           <Button
             variant="contained"
             onClick={() => setShowList(!showList)}
@@ -127,7 +127,7 @@ const ReservationPage: React.FC = () => {
               onEdit={setSelectedReservation}
             />
           </Box>
-        )}
+        )} */}
         <Snackbar
           open={openSnackbar}
           autoHideDuration={6000}

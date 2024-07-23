@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import RoomCard from "../../components/RoomCard/RoomCard";
+import { SessionService } from "../../../../shared/services/SessionService";
 
 interface Room {
   id: string;
@@ -19,34 +20,77 @@ interface Room {
   status: string;
   capacity: number;
   imageUrl: string;
+  occupancyStatus?: boolean;
+  owner?: {email: string, name: string};
 }
 
 const ListRoomPage: React.FC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const navigate = useNavigate(); // Hook para navegação
+  const navigate = useNavigate();
+  const sessionManager = new SessionService();
 
-  useEffect(() => {
-    const fetchRooms = async () => {
+  useEffect(() => {    
+    const fetchRooms = async (new_rooms) => {
       try {
         const response = await axios.get("http://localhost:8000/rooms");
-        console.log("Rooms Response:", response.data);
-        setRooms(response.data.data);
-        setLoading(false);
+        if (response.data.data) {
+          new_rooms = response.data.data;
+        }
+
+        return new_rooms;
       } catch (error) {
         setError("Erro ao carregar as salas.");
-        setLoading(false);
+        throw error;
+      }
+    };
+
+    const fetchStatus = async (new_rooms) => {
+      try {
+        const user_id = sessionManager.getUser()?.id ?? "";
+        const response = await axios.get("http://localhost:8000/rooms/occupancy/" + user_id);
+        if (response.data.data) {
+          const statusList = response.data.data;
+          statusList.forEach(status => {
+            new_rooms.forEach(room => {
+              if (room.id == status.room_id) {
+                room.occupancyStatus = status.occupancy_status;
+                room.owner = status.owner;
+              }
+            });
+          });
+        }
+
+        return new_rooms;
+      } catch (error) {
+        setError("Erro ao carregar os status das salas.");
         console.error(error);
       }
     };
 
-    fetchRooms();
+    const fetchData = async () => {
+      try {
+        let newRooms = [];
+        newRooms = await fetchRooms(newRooms);
+        newRooms = await fetchStatus(newRooms);
+        setRooms(newRooms);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleCreateNewRoom = () => {
-    navigate("/admin/new-room"); // Navega para a página de criação de nova sala
+    navigate("/admin/new-room");
   };
+
+  const isAdmin = () => {
+    return sessionManager.getUser()?.role.toLowerCase() == "admin";
+  }
 
   if (loading) {
     return (
@@ -77,7 +121,7 @@ const ListRoomPage: React.FC = () => {
     <Container maxWidth="md">
       <Box py={4}>
         <Typography variant="h4" gutterBottom>
-          Minhas Salas
+          Salas
         </Typography>
         <Grid container spacing={4}>
           {rooms.map((room) => (
@@ -85,22 +129,26 @@ const ListRoomPage: React.FC = () => {
               <RoomCard
                 id={room.id}
                 roomName={room.roomName || room.name}
-                status={room.status}
+                status={room.status ? true : false}
                 capacity={room.capacity}
                 imageUrl={room.imageUrl}
+                occupancyStatus={room.occupancyStatus}
+                owner={room.owner}
               />
             </Grid>
           ))}
         </Grid>
-        <Box mt={4} display="flex" justifyContent="center">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCreateNewRoom}
-          >
-            Criar Nova Sala
-          </Button>
-        </Box>
+        {isAdmin() && (
+          <Box mt={4} display="flex" justifyContent="center">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCreateNewRoom}
+            >
+              Criar Nova Sala
+            </Button>
+          </Box>
+        )}
       </Box>
     </Container>
   );

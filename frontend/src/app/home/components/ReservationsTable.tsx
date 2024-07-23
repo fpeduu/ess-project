@@ -40,15 +40,21 @@ const ReservationTable: React.FC<ReservationTableProps> = ({
         <TableBody>
           {reservations.length > 0 &&
             reservations.map((reservation) => (
-              <TableRow key={reservation.id}>
-                <TableCell>{reservation.room.name}</TableCell>
-                <TableCell>{reservation.user.name}</TableCell>
-                <TableCell>{reservation.status}</TableCell>
-                <TableCell>
+              <TableRow key={reservation.id} data-cy={`reservation-row`}>
+                <TableCell data-cy="reservation-room">
+                  {reservation.room.name}
+                </TableCell>
+                <TableCell data-cy="reservation-user">
+                  {reservation.user.name}
+                </TableCell>
+                <TableCell data-cy="reservation-status">
+                  {reservation.status}
+                </TableCell>
+                <TableCell data-cy="reservation-start-date">
                   {new Date(reservation.start_date).toLocaleDateString()} -{" "}
                   {new Date(reservation.start_date).toLocaleTimeString()}
                 </TableCell>
-                <TableCell>
+                <TableCell data-cy="reservation-end-date">
                   {new Date(reservation.end_date).toLocaleDateString()} -{" "}
                   {new Date(reservation.end_date).toLocaleTimeString()}
                 </TableCell>

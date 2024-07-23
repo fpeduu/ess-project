@@ -1,7 +1,16 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button, Container } from "@mui/material";
+import { SessionService } from "../../../shared/services/SessionService";
 
 const Header: React.FC = () => {
+  const sessionManager = new SessionService();
+
+  const isLoggedIn = () => {
+    if (sessionManager.getUser()) return true;
+
+    return false;
+  }
+
   return (
     <AppBar position="static">
       <Container>
@@ -10,10 +19,15 @@ const Header: React.FC = () => {
             Sistema de Reservas
           </Typography>
 
-          <Button color="inherit">Login</Button>
-          <Button color="inherit" variant="outlined">
-            Cadastrar-se
-          </Button>
+          { isLoggedIn() ? null : (
+            <div>
+              <Button color="inherit">Login</Button>
+              <Button color="inherit" variant="outlined">
+                Cadastrar-se
+              </Button>
+            </div>
+          )}
+          
         </Toolbar>
       </Container>
     </AppBar>

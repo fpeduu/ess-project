@@ -5,7 +5,7 @@ from src.schemas.room import RoomModel, RoomGet
 from src.db.__init__ import database as db
 
 class RoomService(RoomServiceMeta):
-      
+
       @staticmethod
       def get_rooms(id: str) -> HttpResponseModel:
             """Get items method implementation"""
@@ -80,4 +80,54 @@ class RoomService(RoomServiceMeta):
                   message=HTTPResponses.ROOM_DELETED().message,
                   status_code=HTTPResponses.ROOM_DELETED().status_code,
                   data=rooms,
+            )
+      
+      @staticmethod
+      def get_rooms_occupancy(user_id: str) -> HttpResponseModel:
+            rooms = db.get_all_items('rooms')
+            user = db.get_item_by_id('users', user_id)
+            now = datetime.now()
+            isAdmin = user.get("role", "").lower() in {"admin"}
+            statuses = []
+
+            for room in rooms:
+                  alreadyAdded = False
+                  reservations = db.get_items_by_field('reservations', 'room_id', room.get('id'))
+                  if len(reservations) > 0:
+                        for reservation in reservations:
+                              start_time = reservation.get("start_time")
+                              end_time = reservation.get("end_time")
+                              dt_start_time = datetime.fromisoformat(start_time)
+                              dt_end_time = datetime.fromisoformat(end_time)
+
+                              if dt_start_time <= now <= dt_end_time:
+                                    owner = db.get_item_by_id('users', reservation.get("user_id"))
+                                    if owner.get("id") == user_id or isAdmin:
+                                          owner_obj = {
+                                                "name": owner.get('name'),
+                                                "email": owner.get('email')
+                                          }
+                                    else:
+                                          owner_obj = None
+                                    status = {
+                                          "room_id": room.get("id"),
+                                          "occupancy_status": True,
+                                          "owner": owner_obj
+                                    }
+                              else:
+                                    status = {
+                                          "room_id": room.get("id"),
+                                          "occupancy_status": False,
+                                          "owner": None
+                                    }
+                              
+                              if not alreadyAdded:
+                                    statuses.append(status)
+
+                              alreadyAdded = True
+                  
+            return HttpResponseModel(
+                  message=HTTPResponses.RESERVATION_FOUND().message,
+                  status_code=HTTPResponses.RESERVATION_FOUND().status_code,
+                  data=statuses,
             )

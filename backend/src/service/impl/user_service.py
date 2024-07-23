@@ -74,4 +74,20 @@ class UserService(UserServiceMeta):
             return HttpResponseModel(
                 message=HTTPResponses.USER_NOT_FOUND().message,
                 status_code=HTTPResponses.USER_NOT_FOUND().status_code
-            )   
+            )
+
+@staticmethod
+def get_all_users() -> HttpResponseModel:
+    """Get all items method implementation"""
+    users = db.get_all_items('users')
+    if not users:
+        return HttpResponseModel(
+            message=HTTPResponses.USER_NOT_FOUND().message,
+            status_code=HTTPResponses.USER_NOT_FOUND().status_code,
+        )
+
+    return HttpResponseModel(
+            message=HTTPResponses.USER_FOUND().message,
+            status_code=HTTPResponses.USER_FOUND().status_code,
+            data=users,
+        )
