@@ -7,8 +7,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 const AddUserForm: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleHome = () => {
+    navigate('/');
+  };
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
@@ -41,7 +48,7 @@ const AddUserForm: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Cadastre-se
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} >
         <TextField
           margin="normal"
           required
@@ -101,6 +108,7 @@ const AddUserForm: React.FC = () => {
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
+          
         >
           Salvar
         </Button>
