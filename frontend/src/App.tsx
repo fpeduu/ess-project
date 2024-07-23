@@ -14,6 +14,8 @@ import DeleteUserPage from "./app/home/pages/User/DeleteUserPage";
 import EquipmentManagerPage from "./app/home/pages/Equipment/EquipmentManagerPage";
 import ReservationsManagementPage from "./app/home/pages/ReservationsAdmin/ReservationsPage";
 import Layout from "./app/home/pages/Layout";
+import LoginPage from "./app/home/pages/LoginPage/LoginPage";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,25 +24,27 @@ const router = createBrowserRouter([
       { path: "/", element: <HomePage /> },
       { path: "/create-test", element: <CreateTest /> },
       { path: "/tests", element: <ListTests /> },
+      { path: "/home", element: <ListRoomPage /> },
       { path: "/users", element: <AddUserPage /> },
       { path: "/users/:userId/update", element: <UpdateUserPage /> },
       { path: "/users/delete/:userId", element: <DeleteUserPage /> },
       { path: "/equipment", element: <EquipmentManagerPage /> },
       { path: "/admin/reservations", element: <ReservationsManagementPage /> },
+      { path: "/login", element: <LoginPage />},
+      {
+        path: "/admin/new-room",
+        element: <FormNewRoomPage />,
+      },
+      {
+        path: "/admin/rooms",
+        element: <ListRoomPage />,
+      },
+      {
+        path: "/admin/rooms/:id",
+        element: <RoomDetailsPage />,
+      },
     ],
   },
-  {
-    path: "/new-room",
-    Component: FormNewRoomPage,
-  },
-  {
-    path: "/rooms",
-    Component: ListRoomPage,
-  },
-  {
-    path: "/rooms/:id",
-    Component: RoomDetailsPage,
-  }
 ]);
 
 const App: React.FC = () => {

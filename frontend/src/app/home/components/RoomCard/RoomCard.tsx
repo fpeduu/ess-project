@@ -1,6 +1,12 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, CardActionArea } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CardActionArea,
+} from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface RoomCardProps {
   id: string;
@@ -10,10 +16,16 @@ interface RoomCardProps {
   imageUrl: string;
 }
 
-const RoomCard: React.FC<RoomCardProps> = ({ id, roomName, status, capacity, imageUrl }) => {
+const RoomCard: React.FC<RoomCardProps> = ({
+  id,
+  roomName,
+  status,
+  capacity,
+  imageUrl,
+}) => {
   return (
     <Card data-cy={`room-card-${id}`}>
-      <CardActionArea component={Link} to={`/rooms/${id}`}>
+      <CardActionArea component={Link} to={`/admin/rooms/${id}`}>
         <CardMedia
           component="img"
           height="140"

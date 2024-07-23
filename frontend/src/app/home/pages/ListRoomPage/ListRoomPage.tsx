@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Container, Grid, Typography, CircularProgress, Alert, Box, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import RoomCard from '../../components/RoomCard/RoomCard';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Container,
+  Grid,
+  Typography,
+  CircularProgress,
+  Alert,
+  Box,
+  Button,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import RoomCard from "../../components/RoomCard/RoomCard";
 
 interface Room {
   id: string;
@@ -16,18 +24,18 @@ interface Room {
 const ListRoomPage: React.FC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate(); // Hook para navegação
 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/rooms');
-        console.log('Rooms Response:', response.data);
+        const response = await axios.get("http://localhost:8000/rooms");
+        console.log("Rooms Response:", response.data);
         setRooms(response.data.data);
         setLoading(false);
       } catch (error) {
-        setError('Erro ao carregar as salas.');
+        setError("Erro ao carregar as salas.");
         setLoading(false);
         console.error(error);
       }
@@ -37,13 +45,18 @@ const ListRoomPage: React.FC = () => {
   }, []);
 
   const handleCreateNewRoom = () => {
-    navigate('/new-room'); // Navega para a página de criação de nova sala
+    navigate("/admin/new-room"); // Navega para a página de criação de nova sala
   };
 
   if (loading) {
     return (
       <Container maxWidth="md">
-        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
           <CircularProgress />
         </Box>
       </Container>
@@ -80,7 +93,11 @@ const ListRoomPage: React.FC = () => {
           ))}
         </Grid>
         <Box mt={4} display="flex" justifyContent="center">
-          <Button variant="contained" color="primary" onClick={handleCreateNewRoom}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCreateNewRoom}
+          >
             Criar Nova Sala
           </Button>
         </Box>
