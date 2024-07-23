@@ -81,7 +81,7 @@ Cypress.Commands.add("login", (admin: boolean) => {
 });
 
 Cypress.Commands.add("addReservation", (reservation) => {
-  cy.request("POST", "http://localhost:3001/reservations", reservation);
+  cy.request("POST", "http://localhost:8000/reservations", reservation);
 });
 
 export {};

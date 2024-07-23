@@ -1,6 +1,0 @@
-{
-  "cucumber": {
-    "features": "./cypress/features",
-    "stepDefinitions": "./cypress/stepDefinitions"
-  }
-}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -12,11 +12,22 @@ import {
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
+import { SessionService } from "../../../shared/services/SessionService";
 
 const MenuPage: React.FC = () => {
+  const sessionManager = new SessionService();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [isUserAdmin, setIsUserAdmin] = React.useState(true);
   const navigate = useNavigate();
+  const [userId, setUserId] = React.useState(0);
+
+  useEffect(() => {
+    const user = sessionManager.getUser();
+    if (user) {
+      setIsUserAdmin(user.role === "admin");
+      setUserId(user.id);
+    }
+  }, []);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -46,7 +57,7 @@ const MenuPage: React.FC = () => {
                 position: "absolute",
                 alignSelf: "center",
                 justifySelf: "center",
-                left: "30%",
+                left: "35%",
               }}
             >
               <a
@@ -79,7 +90,7 @@ const MenuPage: React.FC = () => {
                 position: "absolute",
                 alignSelf: "center",
                 justifySelf: "center",
-                left: "30%",
+                left: "35%",
               }}
             >
               <a
@@ -94,14 +105,7 @@ const MenuPage: React.FC = () => {
                 onClick={() => navigate("/admin/reservations")}
                 style={{ marginRight: 16, cursor: "pointer" }}
               >
-                Histórico de Reservas
-              </a>
-              <a
-                color="secondary"
-                onClick={() => navigate("/equipment")}
-                style={{ marginRight: 16, cursor: "pointer" }}
-              >
-                Equipamentos
+                Minhas reservas
               </a>
             </Box>
           )}
@@ -134,11 +138,8 @@ const MenuPage: React.FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => handleMenuClick("/meus-dados")}>
+              <MenuItem onClick={() => handleMenuClick(`/users/update`)}>
                 Meus Dados
-              </MenuItem>
-              <MenuItem onClick={() => handleMenuClick("/minhas-reservas")}>
-                Minhas Reservas
               </MenuItem>
               <MenuItem onClick={() => handleMenuClick("/delete")}>
                 Deletar Conta

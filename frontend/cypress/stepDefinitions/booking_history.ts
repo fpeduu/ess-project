@@ -41,10 +41,16 @@ Then(
 And(
   "a reserva de número {string} informa que a sala é {string}, dia {string} às {string} com status {string}",
   (room, date, time, status) => {
-    cy.getDataCy("reservation-17").should("exist");
-    cy.getDataCy("reservation-17").contains("E122");
-    cy.getDataCy("reservation-17").contains("14/07/2021");
-    cy.getDataCy("reservation-17").contains("15:00");
-    cy.getDataCy("reservation-17").contains("aceito");
+    cy.get("[data-cy=reservation-row]").within(() => {
+      cy.get("[data-cy=reservation-user]").contains("João").should("exist");
+      cy.get("[data-cy=reservation-room]").contains("E122").should("exist");
+      cy.get("[data-cy=reservation-start-date]")
+        .contains("14/07/2021")
+        .should("exist");
+      cy.get("[data-cy=reservation-start-date]")
+        .contains("15:00")
+        .should("exist");
+      cy.get("[data-cy=reservation-status]").contains("aceito").should("exist");
+    });
   }
 );
